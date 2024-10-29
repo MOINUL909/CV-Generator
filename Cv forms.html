@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced CV Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
+        }
+
+        form div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="file"],
+        input[type="date"],
+        input[type="number"],
+        textarea,
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .buttons {
+            grid-column: span 2;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .buttons button:hover {
+            background-color: #218838;
+        }
+
+        .reference-section,
+        .skills-section,
+        .expertise-section {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
+        }
+
+        .cv-visualization {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cv-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .cv-header h3 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        .cv-section {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .cv-section img {
+            max-width: 100px;
+            border-radius: 50%;
+        }
+
+        .reference-divider {
+            border-left: 1px solid #ccc;
+            height: 100%;
+            margin: 0 20px;
+        }
+
+        .references {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .reference {
+            width: 48%; /* Adjust to fit references side by side */
+        }
+
+        .landmark {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Enhanced CV Generator</h2>
+        <form id="cvForm">
+            <!-- Basic Info -->
+            <div>
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" name="phone" required>
+            </div>
+            <div>
+                <label for="sex">Sex</label>
+                <select id="sex" name="sex" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div>
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            <div>
+                <label for="image">Upload Photo</label>
+                <input type="file" id="image" name="image" accept="image/*">
+            </div>
+
+            <!-- Present Address -->
+            <div>
+                <label for="division">Present Address - Division</label>
+                <input type="text" id="division" name="division" required>
+            </div>
+            <div>
+                <label for="district">District</label>
+                <input type="text" id="district" name="district" required>
+            </div>
+            <div>
+                <label for="upazila">Upazila</label>
+                <input type="text" id="upazila" name="upazila" required>
+            </div>
+            <div>
+                <label for="house">House/Room</label>
+                <input type="text" id="house" name="house" required>
+            </div>
+            <div>
+                <label for="road">Road Number</label>
+                <input type="text" id="road" name="road" required>
+            </div>
+            <div>
+                <label for="zip">Zip Code</label>
+                <input type="text" id="zip" name="zip" required>
+            </div>
+
+            <!-- Permanent Address -->
+            <div>
+                <label for="p_division">Permanent Address - Division</label>
+                <input type="text" id="p_division" name="p_division" required>
+            </div>
+            <div>
+                <label for="p_district">District</label>
+                <input type="text" id="p_district" name="p_district" required>
+            </div>
+            <div>
+                <label for="p_upazila">Upazila</label>
+                <input type="text" id="p_upazila" name="p_upazila" required>
+            </div>
+            <div>
+                <label for="p_house">House/Room</label>
+                <input type="text" id="p_house" name="p_house" required>
+            </div>
+            <div>
+                <label for="p_road">Road Number</label>
+                <input type="text" id="p_road" name="p_road" required>
+            </div>
+            <div>
+                <label for="p_zip">Zip Code</label>
+                <input type="text" id="p_zip" name="p_zip" required>
+            </div>
+            <div>
+                <button type="button" onclick="copyAddress()">Same as Present Address</button>
+            </div>
+
+            <!-- Educational Qualification -->
+            <h3>Educational Qualification</h3>
+            <div>
+                <label for="ssc">SSC</label>
+                <input type="text" id="ssc_institute" placeholder="Institute Name" required>
+                <input type="number" id="ssc_year" placeholder="Passing Year" required>
+                <input type="text" id="ssc_cgpa" placeholder="CGPA" required>
+            </div>
+            <div>
+                <label for="hsc">HSC</label>
+                <input type="text" id="hsc_institute" placeholder="Institute Name" required>
+                <input type="number" id="hsc_year" placeholder="Passing Year" required>
+                <input type="text" id="hsc_cgpa" placeholder="CGPA" required>
+            </div>
+            <div>
+                <label for="undergrad">Undergraduate</label>
+                <input type="text" id="undergrad_institute" placeholder="Institute Name" required>
+                <input type="number" id="undergrad_year" placeholder="Passing Year" required>
+                <input type="text" id="undergrad_cgpa" placeholder="CGPA" required>
+            </div>
+            <div>
+                <label for="graduate">Graduate</label>
+                <input type="text" id="graduate_institute" placeholder="Institute Name">
+                <input type="number" id="graduate_year" placeholder="Passing Year">
+                <input type="text" id="graduate_cgpa" placeholder="CGPA">
+            </div>
+
+            <!-- Experience -->
+            <h3>Experience</h3>
+            <div>
+                <label for="exp_institution">Institution Name</label>
+                <input type="text" id="exp_institution" placeholder="e.g., XYZ Corp" required>
+            </div>
+            <div>
+                <label for="exp_position">Position</label>
+                <input type="text" id="exp_position" placeholder="Position Held" required>
+            </div>
+            <div>
+                <label for="exp_duration">Worked Duration</label>
+                <input type="text" id="exp_duration" placeholder="e.g., Jan 2020 - Dec 2021" required>
+            </div>
+
+            <!-- Skills -->
+            <h3>Skills</h3>
+            <div class="skills-section">
+                <div>
+                    <label for="tech_skills">Technical Skills</label>
+                    <textarea id="tech_skills" placeholder="Section wise skills" required></textarea>
+                </div>
+                <div>
+                    <label for="soft_skills">Soft Skills</label>
+                    <textarea id="soft_skills" placeholder="Section wise skills" required></textarea>
+                </div>
+            </div>
+
+            <!-- Expertise -->
+            <h3>Expertise</h3>
+            <div class="expertise-section">
+                <div>
+                    <label for="expertise_technical">Technical Expertise</label>
+                    <textarea id="expertise_technical" placeholder="Section wise expertise" required></textarea>
+                </div>
+                <div>
+                    <label for="expertise_domain">Domain Expertise</label>
+                    <textarea id="expertise_domain" placeholder="Section wise expertise" required></textarea>
+                </div>
+            </div>
+
+            <!-- References -->
+            <h3>References</h3>
+            <div class="references">
+                <div class="reference">
+                    <label for="ref1_name">Reference 1</label>
+                    <input type="text" id="ref1_name" placeholder="Name" required>
+                    <input type="text" id="ref1_position" placeholder="Position" required>
+                    <input type="text" id="ref1_department" placeholder="Department" required>
+                    <input type="text" id="ref1_institute" placeholder="Institute" required>
+                    <input type="text" id="ref1_contact" placeholder="Contact Info" required>
+                </div>
+                <div class="reference-divider"></div>
+                <div class="reference">
+                    <label for="ref2_name">Reference 2</label>
+                    <input type="text" id="ref2_name" placeholder="Name" required>
+                    <input type="text" id="ref2_position" placeholder="Position" required>
+                    <input type="text" id="ref2_department" placeholder="Department" required>
+                    <input type="text" id="ref2_institute" placeholder="Institute" required>
+                    <input type="text" id="ref2_contact" placeholder="Contact Info" required>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="buttons">
+                <button type="button" onclick="generateCV()">Generate CV</button>
+            </div>
+        </form>
+
+        <!-- CV Visualization -->
+        <div id="cvVisualization" class="cv-visualization" style="display: none;">
+            <div class="cv-header">
+                <h3 id="cvNameHeader"></h3>
+            </div>
+            <div id="cvContent"></div>
+            <button id="downloadButton" style="margin-top: 10px; display:none;" onclick="downloadCV()">Download CV as PDF</button>
+            <div class="landmark">Generated by Moinul</div>
+        </div>
+    </div>
+
+    <script>
+        function copyAddress() {
+            document.getElementById('p_division').value = document.getElementById('division').value;
+            document.getElementById('p_district').value = document.getElementById('district').value;
+            document.getElementById('p_upazila').value = document.getElementById('upazila').value;
+            document.getElementById('p_house').value = document.getElementById('house').value;
+            document.getElementById('p_road').value = document.getElementById('road').value;
+            document.getElementById('p_zip').value = document.getElementById('zip').value;
+        }
+
+        function generateCV() {
+            const form = document.getElementById('cvForm');
+            const cvVisualization = document.getElementById('cvVisualization');
+            const cvContent = document.getElementById('cvContent');
+            const imageFile = document.getElementById('image').files[0];
+
+            // Image preview
+            const imagePreview = imageFile ? URL.createObjectURL(imageFile) : '';
+
+            // Collecting form data
+            const name = form.name.value;
+            const email = form.email.value;
+            const phone = form.phone.value;
+            const sex = form.sex.value;
+            const dob = form.dob.value;
+            const division = form.division.value;
+            const district = form.district.value;
+            const upazila = form.upazila.value;
+            const house = form.house.value;
+            const road = form.road.value;
+            const zip = form.zip.value;
+
+            const p_division = form.p_division.value;
+            const p_district = form.p_district.value;
+            const p_upazila = form.p_upazila.value;
+            const p_house = form.p_house.value;
+            const p_road = form.p_road.value;
+            const p_zip = form.p_zip.value;
+
+            const ssc_institute = form.ssc_institute.value;
+            const ssc_year = form.ssc_year.value;
+            const ssc_cgpa = form.ssc_cgpa.value;
+
+            const hsc_institute = form.hsc_institute.value;
+            const hsc_year = form.hsc_year.value;
+            const hsc_cgpa = form.hsc_cgpa.value;
+
+            const undergrad_institute = form.undergrad_institute.value;
+            const undergrad_year = form.undergrad_year.value;
+            const undergrad_cgpa = form.undergrad_cgpa.value;
+
+            const graduate_institute = form.graduate_institute.value;
+            const graduate_year = form.graduate_year.value;
+            const graduate_cgpa = form.graduate_cgpa.value;
+
+            const exp_institution = form.exp_institution.value;
+            const exp_position = form.exp_position.value;
+            const exp_duration = form.exp_duration.value;
+
+            const tech_skills = form.tech_skills.value;
+            const soft_skills = form.soft_skills.value;
+
+            const expertise_technical = form.expertise_technical.value;
+            const expertise_domain = form.expertise_domain.value;
+
+            const ref1_name = form.ref1_name.value;
+            const ref1_position = form.ref1_position.value;
+            const ref1_department = form.ref1_department.value;
+            const ref1_institute = form.ref1_institute.value;
+            const ref1_contact = form.ref1_contact.value;
+
+            const ref2_name = form.ref2_name.value;
+            const ref2_position = form.ref2_position.value;
+            const ref2_department = form.ref2_department.value;
+            const ref2_institute = form.ref2_institute.value;
+            const ref2_contact = form.ref2_contact.value;
+
+            // Constructing CV content
+            cvContent.innerHTML = `
+                <div class="cv-section">
+                    <h4>Personal Information</h4>
+                    <img src="${imagePreview}" alt="Profile Image"/>
+                    <strong>Name:</strong> ${name}<br>
+                    <strong>Email:</strong> ${email}<br>
+                    <strong>Phone:</strong> ${phone}<br>
+                    <strong>Sex:</strong> ${sex}<br>
+                    <strong>Date of Birth:</strong> ${dob}<br>
+                    <strong>Present Address:</strong> ${division}, ${district}, ${upazila}, ${house}, ${road}, ${zip}<br>
+                    <strong>Permanent Address:</strong> ${p_division}, ${p_district}, ${p_upazila}, ${p_house}, ${p_road}, ${p_zip}<br>
+                </div>
+                <div class="cv-section">
+                    <h4>Educational Qualification</h4>
+                    <strong>SSC:</strong> ${ssc_institute}, ${ssc_year}, CGPA: ${ssc_cgpa}<br>
+                    <strong>HSC:</strong> ${hsc_institute}, ${hsc_year}, CGPA: ${hsc_cgpa}<br>
+                    <strong>Undergraduate:</strong> ${undergrad_institute}, ${undergrad_year}, CGPA: ${undergrad_cgpa}<br>
+                    <strong>Graduate:</strong> ${graduate_institute}, ${graduate_year}, CGPA: ${graduate_cgpa}<br>
+                </div>
+                <div class="cv-section">
+                    <h4>Experience</h4>
+                    <strong>Institution:</strong> ${exp_institution}<br>
+                    <strong>Position:</strong> ${exp_position}<br>
+                    <strong>Worked Duration:</strong> ${exp_duration}<br>
+                </div>
+                <div class="cv-section">
+                    <h4>Skills</h4>
+                    <strong>Technical Skills:</strong> ${tech_skills}<br>
+                    <strong>Soft Skills:</strong> ${soft_skills}<br>
+                </div>
+                <div class="cv-section">
+                    <h4>Expertise</h4>
+                    <strong>Technical Expertise:</strong> ${expertise_technical}<br>
+                    <strong>Domain Expertise:</strong> ${expertise_domain}<br>
+                </div>
+                <div class="cv-section">
+                    <h4>References</h4>
+                    <div class="references">
+                        <div class="reference">
+                            <strong>${ref1_name}</strong><br>
+                            ${ref1_position}, ${ref1_department}, ${ref1_institute}, ${ref1_contact}
+                        </div>
+                        <div class="reference-divider"></div>
+                        <div class="reference">
+                            <strong>${ref2_name}</strong><br>
+                            ${ref2_position}, ${ref2_department}, ${ref2_institute}, ${ref2_contact}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Set the CV Name Header
+            document.getElementById('cvNameHeader').innerText = name;
+
+            cvVisualization.style.display = "block";
+            document.getElementById('downloadButton').style.display = "block";
+        }
+
+        async function downloadCV() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add CV content
+            const cvContent = document.getElementById('cvContent').innerHTML;
+            const pdfContent = cvContent.replace(/<[^>]+>/g, ''); // Remove HTML tags for plain text
+
+            // Get image data if available
+            const imageFile = document.getElementById('image').files[0];
+            if (imageFile) {
+                const imageUrl = URL.createObjectURL(imageFile);
+                const img = new Image();
+                img.src = imageUrl;
+
+                img.onload = function() {
+                    doc.addImage(img, 'JPEG', 10, 10, 40, 40); // Adjust position and size as needed
+                    doc.text(pdfContent, 6, 60); // Adjust text position after image
+                    doc.save('CV.pdf');
+                };
+            } else {
+                doc.text(pdfContent, 10, 10);
+                doc.save('CV.pdf');
+            }
+        }
+    </script>
+</body>
+</html>
